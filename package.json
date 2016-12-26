@@ -1,0 +1,21 @@
+{
+  "name": "react-build-dist",
+  "version": "0.0.1-alpha-0",
+  "description": "A simple utility for compiling your React components to standalone modules.",
+  "bin": {
+    "react-build-dist": "./bin/index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Adrian Li",
+  "license": "ISC",
+  "dependencies": {
+    "babel-core": "^6.21.0",
+    "babel-loader": "^6.2.10",
+    "babel-preset-latest": "^6.16.0",
+    "babel-preset-react": "^6.16.0",
+    "rimraf": "^2.5.4",
+    "webpack": "^1.14.0"
+  }
+}
