@@ -14,7 +14,7 @@ shell.ls(`${INPUT_DIR}/*.js`, `${INPUT_DIR}/*.jsx`).forEach(function(file) {
   entryPoints.push(file);
 });
 
-console.log(entryPoints);
+console.log('Entry points:', entryPoints);
 
 rimrafSync(OUTPUT_DIR);
 
@@ -26,5 +26,7 @@ compiler.run(function(err, stats) {
   }
   if (stats.hasErrors()) {
     console.log(stats.toJson());
+  } else {
+    console.log('Build successful!');
   }
 });

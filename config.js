@@ -18,7 +18,7 @@ const config = (entryPoints, out) => ({
   module: {
     loaders: [
       {
-        test: /\.js$/,
+        test: /[.js|.jsx]$/,
         loader: require.resolve('babel-loader'),
         query: { presets: [
           'babel-preset-latest',
