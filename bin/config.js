@@ -1,15 +1,14 @@
-var path = require('path');
+const path = require('path');
 
 // resolving for loaders and presets:
 // https://github.com/babel/babel-loader/issues/166#issuecomment-160866946
 
-const config = (entryPoints, out) => ({
+const config = (entryPoints, out, bundleName) => ({
   resolveLoader: { root: path.join(__dirname, 'node_modules') },
-  devtool: 'source-map',
   entry: entryPoints,
   output: {
     path: out,
-    filename: 'index.js',
+    filename: bundleName,
     libraryTarget: 'umd',
   },
   externals: {

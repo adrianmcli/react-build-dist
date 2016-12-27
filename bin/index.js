@@ -1,25 +1,34 @@
 #!/usr/bin/env node
 
-const shell = require('shelljs');
-const webpack = require('webpack');
-const config = require('../config.js');
+const program = require('commander');
 const rimrafSync = require('rimraf').sync;
+const webpack = require('webpack');
 
-const INPUT_DIR = process.argv[2] || './src';
-const OUTPUT_DIR = process.argv[3] || 'dist';
+const utils = require('./utils');
+const config = require('./config.js');
 
-const entryPoints = [];
+// get inputs
+program
+  .version('0.0.1')
+  .option('-b, --bundle-name [filename]', 'Output bundle filename')
+  .parse(process.argv);
 
-shell.ls(`${INPUT_DIR}/*.js`, `${INPUT_DIR}/*.jsx`).forEach(function(file) {
-  entryPoints.push(file);
-});
+const bundleName = program.bundleName || 'MyBundle.js';
+const inputDir = program.args[0] || 'src';
+const outputDir = program.args[1] || 'dist';
 
+// process inputs
+const pathToSrc = utils.getAbsolutePath(inputDir);
+const pathToDist = utils.getAbsolutePath(outputDir);
+
+const entryPoints = utils.getEntryPoints(pathToSrc);
 console.log('Entry points:', entryPoints);
 
-rimrafSync(OUTPUT_DIR);
+// wipe directory
+rimrafSync(pathToDist);
 
-const compiler = webpack(config(entryPoints, OUTPUT_DIR));
-
+// begin compilation
+const compiler = webpack(config(entryPoints, pathToDist, bundleName));
 compiler.run(function(err, stats) {
   if (err) {
     console.log('ERROR:', err);
