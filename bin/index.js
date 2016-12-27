@@ -21,14 +21,11 @@ const outputDir = program.args[1] || 'dist';
 const pathToSrc = utils.getAbsolutePath(inputDir);
 const pathToDist = utils.getAbsolutePath(outputDir);
 
-const entryPoints = utils.getEntryPoints(pathToSrc);
-console.log('Entry points:', entryPoints);
-
 // wipe directory
 rimrafSync(pathToDist);
 
 // begin compilation
-const compiler = webpack(config(entryPoints, pathToDist, bundleName));
+const compiler = webpack(config(pathToSrc, pathToDist, bundleName));
 compiler.run(function(err, stats) {
   if (err) {
     console.log('ERROR:', err);

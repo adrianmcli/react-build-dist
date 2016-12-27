@@ -11,4 +11,6 @@ const getEntryPoints = (srcPath) => {
 
 const getAbsolutePath = dir => path.resolve(process.cwd(), dir);
 
-module.exports = { getEntryPoints, getAbsolutePath };
+const stripExtension = x => x.replace(/\.[^/.]+$/, '');
+
+module.exports = { getEntryPoints, getAbsolutePath, stripExtension };
