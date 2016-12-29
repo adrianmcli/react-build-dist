@@ -18,7 +18,16 @@ const getPlugins = () => [
   }),
 ];
 
-const getConfig = (entry, out, libraryName, bundleName, minify) => ({
+const getPresets = (experimental) => {
+  const stagePreset = experimental ? 'babel-preset-stage-0' : 'babel-preset-stage-3';
+  return [
+    'babel-preset-latest',
+    'babel-preset-react',
+    stagePreset,
+  ].map(require.resolve);
+};
+
+const getConfig = ({ entry, out, libraryName, bundleName, minify, presets }) => ({
   resolveLoader: { root: path.join(__dirname, 'node_modules') },
   entry,
   output: {
@@ -35,24 +44,34 @@ const getConfig = (entry, out, libraryName, bundleName, minify) => ({
       {
         test: /[.js|.jsx]$/,
         loader: require.resolve('babel-loader'),
-        query: { presets: [
-          'babel-preset-latest',
-          'babel-preset-stage-3',
-          'babel-preset-react',
-        ].map(require.resolve),
-        },
+        query: { presets },
       },
     ],
   },
   plugins: minify ? getPlugins() : [],
 });
 
-const config = (entry, out, bundleName) => {
+const config = (entry, out, bundleName, experimental) => {
   const libraryName = utils.stripExtension(bundleName);
-  const minBundleName = `${libraryName}.min.js`;
+
+  // options for base bundle
+  const baseOptions = {
+    entry,
+    out,
+    libraryName,
+    bundleName,
+    presets: getPresets(experimental),
+  };
+
+  // options for minified bundle extend from baseOptions
+  const minOptions = Object.assign({}, baseOptions, {
+    bundleName: `${libraryName}.min.js`,
+    minify: true,
+  });
+
   return [
-    getConfig(entry, out, libraryName, bundleName),
-    getConfig(entry, out, libraryName, minBundleName, true),
+    getConfig(baseOptions),
+    getConfig(minOptions),
   ];
 };
 

@@ -11,9 +11,11 @@ const config = require('./config.js');
 program
   .version('0.0.1')
   .option('-b, --bundle-name [filename]', 'Output bundle filename')
+  .option('-x, --stage-0', 'Turn on stage-0 for experimental features.')
   .parse(process.argv);
 
 const bundleName = program.bundleName || 'MyBundle.js';
+const experimental = program.stage0;
 const inputDir = program.args[0] || 'src';
 const outputDir = program.args[1] || 'dist';
 
@@ -25,7 +27,7 @@ const pathToDist = utils.getAbsolutePath(outputDir);
 rimrafSync(pathToDist);
 
 // begin compilation
-const compiler = webpack(config(pathToSrc, pathToDist, bundleName));
+const compiler = webpack(config(pathToSrc, pathToDist, bundleName, experimental));
 compiler.run(function(err, stats) {
   if (err) {
     console.log('ERROR:', err);
