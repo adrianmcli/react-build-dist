@@ -1,6 +1,6 @@
 {
   "name": "react-build-dist",
-  "version": "0.0.1-alpha-1",
+  "version": "0.0.3",
   "description": "A simple utility for compiling your React components to standalone modules.",
   "bin": {
     "react-build-dist": "./bin/index.js"
@@ -15,9 +15,10 @@
     "babel-loader": "^6.2.10",
     "babel-preset-latest": "^6.16.0",
     "babel-preset-react": "^6.16.0",
+    "babel-preset-stage-0": "^6.16.0",
+    "babel-preset-stage-3": "^6.17.0",
     "commander": "^2.9.0",
     "rimraf": "^2.5.4",
-    "shelljs": "^0.7.5",
     "webpack": "^1.14.0"
   }
 }
