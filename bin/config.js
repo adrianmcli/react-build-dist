@@ -37,7 +37,7 @@ const getConfig = ({ entry, out, libraryName, bundleName, minify, presets }) => 
     library: libraryName,
   },
   externals: {
-    react: 'React',
+    react: 'react',
   },
   module: {
     loaders: [
