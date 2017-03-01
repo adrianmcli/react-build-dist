@@ -15,6 +15,7 @@
   },
   "license": "ISC",
   "dependencies": {
+    "app-root-path": "^2.0.1",
     "babel-core": "^6.21.0",
     "babel-loader": "^6.2.10",
     "babel-preset-latest": "^6.16.0",

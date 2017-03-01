@@ -1,6 +1,10 @@
 const webpack = require('webpack');
+const fs = require('fs');
 const path = require('path');
+const appRoot = require('app-root-path');
 const utils = require('./utils');
+
+const PACKAGE_FILENAME = 'package.json';
 
 // resolving for loaders and presets:
 // https://github.com/babel/babel-loader/issues/166#issuecomment-160866946
@@ -51,7 +55,27 @@ const getConfig = ({ entry, out, libraryName, bundleName, minify, presets }) => 
   plugins: minify ? getPlugins() : [],
 });
 
-const config = (entry, out, bundleName, experimental) => {
+const getConfigOverride = (pkgDir = appRoot.toString()) => {
+  const pkgLoc = path.join(pkgDir, PACKAGE_FILENAME)
+
+  try {
+    if (!fs.existsSync(pkgLoc)) return {};
+  } catch (e) {
+    return {};
+  }
+
+  const packageJSON = require(pkgLoc);
+
+  return packageJSON['react-build-dist'] || {};
+}
+
+const config = ({
+  entry,
+  out,
+  bundleName,
+  experimental,
+  packageJSONDir,
+}) => {
   const libraryName = utils.stripExtension(bundleName);
 
   // options for base bundle
@@ -64,15 +88,22 @@ const config = (entry, out, bundleName, experimental) => {
   };
 
   // options for minified bundle extend from baseOptions
-  const minOptions = Object.assign({}, baseOptions, {
+  const minOptions = {
+    ...baseOptions,
     bundleName: `${libraryName}.min.js`,
     minify: true,
-  });
+  };
 
-  return [
-    getConfig(baseOptions),
-    getConfig(minOptions),
-  ];
+  const baseConfigs = {
+    ...getConfig(baseOptions),
+    ...getConfigOverride(packageJSONDir),
+  };
+  const minConfigs = {
+    ...getConfig(minOptions),
+    ...getConfigOverride(packageJSONDir),
+  };
+
+  return [baseConfigs, minConfigs];
 };
 
 module.exports = config;
