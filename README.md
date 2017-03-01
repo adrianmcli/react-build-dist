@@ -29,3 +29,57 @@ Ideally, we want the following workflow for React component library authors:
   }
   ```
 3. Now, everytime `npm run build:dist` is run, Webpack will compile the user's React components from the `src` folder into a bundled javascript file inside the `dist` folder (along with a minified version) for standalone usage.
+
+
+## API
+
+### `--bundle-name [filename]`
+
+Output bundle filename.
+
+```bash
+react-build-dist --bundle-name MyCoolComponent.js
+```
+
+### `--stage-0`
+
+Turn on stage-0 for experimental features.
+
+```bash
+react-build-dist --stage-0
+```
+
+### `--package-json [dirPath]`
+
+Path to package.json directory with react-build-dist config override.
+
+We will try to guess your projects root directory, but depending on your installation configuration
+we might not be able to reliably find it. This param allows you to manually pass it in.
+
+```bash
+react-build-dist --package-json $(pwd)
+```
+
+## Config Overrides
+
+In your `package.json` you can override some of the default build settings. This is useful if your
+project uses more than just React as an external.
+
+In your package json add a key of `react-build-dist` and you can override any of the following:
+  - resolveLoader
+  - entry
+  - output
+  - externals
+  - module
+  - plugins
+
+Example:
+
+```json
+  "react-build-dist": {
+    "externals": {
+      "react": "react",
+      "react-dom": "react-dom"
+    }
+  }
+```

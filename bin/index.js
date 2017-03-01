@@ -11,6 +11,7 @@ const config = require('./config.js');
 program
   .version('0.0.1')
   .option('-b, --bundle-name [filename]', 'Output bundle filename')
+  .option('-p, --package-json [path]', 'Path to package.json directory with react-build-dist config override')
   .option('-x, --stage-0', 'Turn on stage-0 for experimental features.')
   .parse(process.argv);
 
@@ -18,6 +19,7 @@ const bundleName = program.bundleName || 'MyBundle.js';
 const experimental = program.stage0;
 const inputDir = program.args[0] || 'src';
 const outputDir = program.args[1] || 'dist';
+const packageJSONDir = program.packageJson;
 
 // process inputs
 const pathToSrc = utils.getAbsolutePath(inputDir);
@@ -27,7 +29,14 @@ const pathToDist = utils.getAbsolutePath(outputDir);
 rimrafSync(pathToDist);
 
 // begin compilation
-const compiler = webpack(config(pathToSrc, pathToDist, bundleName, experimental));
+const compiler = webpack(config({
+  entry: pathToSrc,
+  out: pathToDist,
+  bundleName,
+  experimental,
+  packageJSONDir,
+}));
+
 compiler.run(function(err, stats) {
   if (err) {
     console.log('ERROR:', err);
