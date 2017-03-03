@@ -25,5 +25,12 @@
     "commander": "^2.9.0",
     "rimraf": "^2.6.1",
     "webpack": "^1.14.0"
+  },
+  "devDependencies": {
+    "eslint": "^3.16.1",
+    "eslint-config-airbnb": "^14.1.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^4.0.0",
+    "eslint-plugin-react": "^6.10.0"
   }
 }
