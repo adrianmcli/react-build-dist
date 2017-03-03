@@ -56,7 +56,7 @@ const getConfig = ({ entry, out, libraryName, bundleName, minify, presets }) => 
 });
 
 const getConfigOverride = (pkgDir = appRoot.toString()) => {
-  const pkgLoc = path.join(pkgDir, PACKAGE_FILENAME)
+  const pkgLoc = path.join(pkgDir, PACKAGE_FILENAME);
 
   try {
     if (!fs.existsSync(pkgLoc)) return {};
@@ -64,10 +64,11 @@ const getConfigOverride = (pkgDir = appRoot.toString()) => {
     return {};
   }
 
+  // eslint-disable-next-line import/no-dynamic-require, global-require
   const packageJSON = require(pkgLoc);
 
   return packageJSON['react-build-dist'] || {};
-}
+};
 
 const config = ({
   entry,
@@ -88,11 +89,10 @@ const config = ({
   };
 
   // options for minified bundle extend from baseOptions
-  const minOptions = {
-    ...baseOptions,
+  const minOptions = Object.assign({}, baseOptions, {
     bundleName: `${libraryName}.min.js`,
     minify: true,
-  };
+  });
 
   const baseConfigs = Object.assign({},
     getConfig(baseOptions),
