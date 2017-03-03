@@ -94,14 +94,15 @@ const config = ({
     minify: true,
   };
 
-  const baseConfigs = {
-    ...getConfig(baseOptions),
-    ...getConfigOverride(packageJSONDir),
-  };
-  const minConfigs = {
-    ...getConfig(minOptions),
-    ...getConfigOverride(packageJSONDir),
-  };
+  const baseConfigs = Object.assign({},
+    getConfig(baseOptions),
+    getConfigOverride(packageJSONDir),
+  );
+
+  const minConfigs = Object.assign({},
+    getConfig(minOptions),
+    getConfigOverride(packageJSONDir),
+  );
 
   return [baseConfigs, minConfigs];
 };
