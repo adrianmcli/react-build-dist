@@ -37,7 +37,7 @@ const compiler = webpack(config({
   packageJSONDir,
 }));
 
-compiler.run(function(err, stats) {
+compiler.run((err, stats) => {
   if (err) {
     console.log('ERROR:', err);
   }
